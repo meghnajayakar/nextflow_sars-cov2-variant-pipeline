@@ -1,0 +1,10 @@
+# Nextflow
+work/
+.nextflow/
+.nextflow.log*
+results/
+null/
+
+# Test data (regenerate with make_testdata.sh)
+testdata/
+EOF

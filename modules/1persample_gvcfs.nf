@@ -1,7 +1,8 @@
-// modules/call_variants.nf
+// modules/1persample_gvcfs.nf
 
-process CALL_VARIANTS {
+process PERSAMPLE_GVCFS {
     tag "$sample_id"
+    container 'broadinstitute/gatk:4.5.0.0'
     publishDir "${params.outdir}/gvcf", mode: 'copy'
 
     input:
