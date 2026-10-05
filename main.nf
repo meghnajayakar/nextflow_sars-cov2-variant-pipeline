@@ -3,6 +3,7 @@
 nextflow.enable.dsl = 2
 
 include { PERSAMPLE_GVCFS } from './modules/1persample_gvcfs.nf'
+include { COMBINE_GVCFS } from "./modules/2combine_gvcfs.nf"
 
 workflow {
 
@@ -22,4 +23,10 @@ workflow {
     PERSAMPLE_GVCFS(samples_ch, reference_ch)
 
     PERSAMPLE_GVCFS.out.gvcf.view()
+
+    gvcfs_ch = PERSAMPLE_GVCFS.out.gvcf.map{sample_id, gvcf, tbi -> gvcf}.collect()
+    indices_ch = PERSAMPLE_GVCFS.out.gvcf.map{sample_id, gvcf, tbi -> tbi}.collect()
+
+    COMBINE_GVCFS(reference_ch, gvcfs_ch, indices_ch)
+
 }
