@@ -1,7 +1,6 @@
 // modules/3joint_genotyping.nf
 
 process JOINT_GENOTYPING {
-    // tag "$sample_id"
     container 'broadinstitute/gatk:4.5.0.0'
     publishDir "${params.outdir}/joint_genotyping", mode: 'copy'
 
@@ -14,9 +13,10 @@ process JOINT_GENOTYPING {
 
     script:
     """
-    gatk GenotypeGVCFs \\
-        -R ${fasta} \\
-        -V ${combined_gvcf} \\
-        -O combined.raw.vcf.gz 
+    gatk GenotypeGVCFs \
+        -R ${fasta} \
+        -V ${combined_gvcf} \
+        --include-non-variant-sites true \
+        -O combined.raw.vcf.gz
     """
 }
