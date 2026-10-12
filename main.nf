@@ -6,11 +6,13 @@ include { PERSAMPLE_GVCFS } from './modules/1persample_gvcfs.nf'
 include { COMBINE_GVCFS } from "./modules/2combine_gvcfs.nf"
 include { JOINT_GENOTYPING } from "./modules/3joint_genotyping.nf"
 include { VARIANT_FILTRATION} from "./modules/4variant_filtration.nf"
+include { VARIANT_ANNOTATION } from "./modules/5variant_annotation.nf"
 
 workflow {
 
     if (!params.samplesheet) error "Please provide --samplesheet"
     if (!params.reference)   error "Please provide --reference"
+    if (!params.gff)         error "Please provide --gff"
 
     // reference trio: fasta + .fai + .dict, all sitting next to each other
     reference_ch = channel.fromPath(params.reference)
@@ -35,6 +37,9 @@ workflow {
 
     VARIANT_FILTRATION(JOINT_GENOTYPING.out.joint_genotyping)
 
+    gff_ch = channel.of(tuple(file(params.gff), file("${params.gff}.tbi"))).first()
+
+    VARIANT_ANNOTATION(VARIANT_FILTRATION.out.variant_filtration, gff_ch, reference_ch)
 
 
 }
