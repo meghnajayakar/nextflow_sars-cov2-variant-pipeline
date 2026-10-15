@@ -18,6 +18,7 @@ process PERSAMPLE_GVCFS {
         -R ${fasta} \\
         -I ${cram} \\
         -O ${sample_id}.g.vcf.gz \\
+        -ploidy 1 \\
         -ERC GVCF
     """
 }

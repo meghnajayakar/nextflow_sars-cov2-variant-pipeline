@@ -4,7 +4,9 @@ work/
 .nextflow.log*
 results/
 null/
+results_sars_cov2/
 
 # Test data (regenerate with make_testdata.sh)
 testdata/
+testdata_sarscov2/
 EOF
